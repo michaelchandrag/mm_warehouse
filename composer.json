@@ -1,0 +1,20 @@
+{
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.0",
+        "nyholm/psr7": "^1.2",
+        "nyholm/psr7-server": "^0.4.1",
+        "guzzlehttp/psr7": "^1.6",
+        "http-interop/http-factory-guzzle": "^1.0",
+        "laminas/laminas-diactoros": "^2.2",
+        "php-di/slim-bridge": "^3.0",
+        "illuminate/database": "^6.11",
+        "vlucas/phpdotenv": "^4.1"
+    },
+    "autoload": {
+    	"psr-4": {
+    		"Controllers\\": "app/controllers/",
+            "Models\\": "app/models/"
+    	}
+    }
+}
