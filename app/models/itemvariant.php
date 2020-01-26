@@ -4,28 +4,28 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Capsule\Manager as DB;
 
-class Outlet extends Model {
+class ItemVariant extends Model {
     use SoftDeletes;
-    protected $table = 'outlet';
+    protected $table = 'item_variant';
 
-    public function findOutlets($filter = []) {
-        $query = DB::table('outlet');
+    public function findItemVariants($filter = []) {
+        $query = DB::table('item_variant');
         foreach ($filter as $key => $value) {
             $query->where($key, '=', $value);
         }
         return $query->get();
     }
 
-    public function createOutlet($data) {
-        $newOutlet = new Outlet;
+    public function createItemVariant($data) {
+        $newItemVariant = new ItemVariant;
         foreach ($data as $key => $value) {
-            $newOutlet->{$key} = $value;
+            $newItemVariant->{$key} = $value;
         }
-        return $newOutlet->save();
+        return $newItemVariant->save();
     }
 
-    public function updateOutlet($filter, $data) {
-        $query = DB::table('outlet');
+    public function updateItemVariant($filter, $data) {
+        $query = DB::table('item_variant');
         foreach ($filter as $key => $value) {
             $query->where($key,$value);
         }

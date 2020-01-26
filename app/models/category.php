@@ -4,28 +4,28 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Capsule\Manager as DB;
 
-class Outlet extends Model {
+class Category extends Model {
     use SoftDeletes;
-    protected $table = 'outlet';
+    protected $table = 'category';
 
-    public function findOutlets($filter = []) {
-        $query = DB::table('outlet');
+    public function findCategories($filter = []) {
+        $query = DB::table('category');
         foreach ($filter as $key => $value) {
             $query->where($key, '=', $value);
         }
         return $query->get();
     }
 
-    public function createOutlet($data) {
-        $newOutlet = new Outlet;
+    public function createCategory($data) {
+        $newCategory = new Category;
         foreach ($data as $key => $value) {
-            $newOutlet->{$key} = $value;
+            $newCategory->{$key} = $value;
         }
-        return $newOutlet->save();
+        return $newCategory->save();
     }
 
-    public function updateOutlet($filter, $data) {
-        $query = DB::table('outlet');
+    public function updateCategory($filter, $data) {
+        $query = DB::table('category');
         foreach ($filter as $key => $value) {
             $query->where($key,$value);
         }

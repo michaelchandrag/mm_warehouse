@@ -1,0 +1,7 @@
+url="http://localhost/mm_warehouse/moka/transactions"
+since=$(date +"%Y-%m-%d");
+until=$(date +"%Y-%m-%d" -d "+ 1 days");
+curl -XPOST -d '{
+	"since":${since},
+	"until":${until}
+}' ${url}

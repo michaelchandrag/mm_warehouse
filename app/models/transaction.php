@@ -4,28 +4,28 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Capsule\Manager as DB;
 
-class Outlet extends Model {
+class Transaction extends Model {
     use SoftDeletes;
-    protected $table = 'outlet';
+    protected $table = 'transaction';
 
-    public function findOutlets($filter = []) {
-        $query = DB::table('outlet');
+    public function findTransactions($filter = []) {
+        $query = DB::table('transaction');
         foreach ($filter as $key => $value) {
             $query->where($key, '=', $value);
         }
         return $query->get();
     }
 
-    public function createOutlet($data) {
-        $newOutlet = new Outlet;
+    public function createTransaction($data) {
+        $newTransaction = new Transaction;
         foreach ($data as $key => $value) {
-            $newOutlet->{$key} = $value;
+            $newTransaction->{$key} = $value;
         }
-        return $newOutlet->save();
+        return $newTransaction->save();
     }
 
-    public function updateOutlet($filter, $data) {
-        $query = DB::table('outlet');
+    public function updateTransaction($filter, $data) {
+        $query = DB::table('transaction');
         foreach ($filter as $key => $value) {
             $query->where($key,$value);
         }
