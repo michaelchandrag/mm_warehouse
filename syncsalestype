@@ -1,2 +1,2 @@
-url="http://localhost/mm_warehouse/moka/sales_type"
+url="http://backoffice.marimakan.co.id/moka/sales_type"
 curl -XPOST ${url}
