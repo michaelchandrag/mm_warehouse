@@ -48,7 +48,7 @@ function throwJSON($response, $data) {
 }
 
 function slackWebhook($message) {
-    $url = 'https://hooks.slack.com/services/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';
+    $url = getenv('SLACK_WEBHOOK_URL');
     $payload = array(
     	"text" => $message
     );
