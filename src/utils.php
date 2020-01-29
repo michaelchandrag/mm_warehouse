@@ -34,6 +34,15 @@ function guzzleGET($url, $headers=array()) {
 	return isJson($response->getBody()) ? json_decode($response->getBody(), true) : $response->getBody();
 }
 
+function guzzlePOST($url, $headers=array(), $body=array()) {
+	$client = new Client();
+	$response = $client->request('POST', $url, [
+		'headers' => $headers,
+		'body' => json_encode($body)
+	]);
+	return isJson($response->getBody()) ? json_decode($response->getBody(), true) : $response->getBody();
+}
+
 function isJson($string) {
     json_decode($string);
     return (json_last_error() == JSON_ERROR_NONE);
@@ -60,7 +69,7 @@ function addDays($date,$add_by)
 {
     // append $date to $add_by
     // $date must be a datetime format
-    $date = date('Y-m-d H:i:s',strtotime($date. " + ".$add_by." days"));
+    $date = date('Y-m-d',strtotime($date. " + ".$add_by." days"));
     // return date after appended
     return $date;
 }

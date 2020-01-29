@@ -1,2 +1,3 @@
+#!/bin/sh
 url="http://backoffice.marimakan.co.id/moka/categories"
-curl -XPOST ${url}
+curl -XPOST -H 'Content-Length: 0' ${url}
