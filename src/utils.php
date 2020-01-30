@@ -38,7 +38,7 @@ function guzzlePOST($url, $headers=array(), $body=array()) {
 	$client = new Client();
 	$response = $client->request('POST', $url, [
 		'headers' => $headers,
-		'body' => json_encode($body)
+		'json' => $body
 	]);
 	return isJson($response->getBody()) ? json_decode($response->getBody(), true) : $response->getBody();
 }

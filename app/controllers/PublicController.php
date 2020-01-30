@@ -294,10 +294,10 @@ class PublicController {
 				// end of checkouts
 
 			}
-			$payload[$outlet->moka_outlet_id]['total']['new'] = isset($payload[$outlet->moka_outlet_id]['new']) ? count($payload[$outlet->moka_outlet_id]['new']) : 0;
-			$payload[$outlet->moka_outlet_id]['total']['update'] = isset($payload[$outlet->moka_outlet_id]['update']) ? count($payload[$outlet->moka_outlet_id]['update']) : 0;
+			$payload['total']['new'] += isset($payload[$outlet->moka_outlet_id]['new']) ? count($payload[$outlet->moka_outlet_id]['new']) : 0;
+			$payload['total']['update'] += isset($payload[$outlet->moka_outlet_id]['update']) ? count($payload[$outlet->moka_outlet_id]['update']) : 0;
 		}
-		$msg = "Sync Transaction on ".date("l, Y-m-d H:i:s")."\nSince: ".((!empty($body['since'])) ? $body['since'] : '')."\nFrom: ".((!empty($body['until'])) ? $body['until'] : '')."\nResult => New: ".$payload[$outlet->moka_outlet_id]['total']['new']." | Update: ".$payload[$outlet->moka_outlet_id]['total']['update']."\n===================================================================";
+		$msg = "Sync Transaction on ".date("l, Y-m-d H:i:s")."\nSince: ".((!empty($body['since'])) ? $body['since'] : '')."\nFrom: ".((!empty($body['until'])) ? $body['until'] : '')."\nResult => New: ".(isset($payload['total']['new']) ? $payload['total']['new'] : 0)." | Update: ".(isset($payload['total']['update']) ? $payload['total']['update'] : 0)."\n===================================================================";
 		slackWebhook($msg);
 		return throwJSON($response, $payload);
 	}
