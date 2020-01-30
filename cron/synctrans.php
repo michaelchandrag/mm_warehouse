@@ -2,7 +2,7 @@
 require __DIR__.'/../vendor/autoload.php';
 require __DIR__.'/../src/utils.php';
 
-$url = "localhost/mm_warehouse/moka/transactions";
+$url = "http://backoffice.marimakan.co.id/moka/transactions";
 $headers = [
 	'Content-Length' => 0
 ];
