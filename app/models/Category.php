@@ -16,6 +16,14 @@ class Category extends Model {
         return $query->get();
     }
 
+    public function findCategory($filter = []) {
+        $query = DB::table('category');
+        foreach ($filter as $key => $value) {
+            $query->where($key, '=', $value);
+        }
+        return $query->first();
+    }
+
     public function createCategory($data) {
         $newCategory = new Category;
         foreach ($data as $key => $value) {

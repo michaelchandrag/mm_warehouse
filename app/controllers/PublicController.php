@@ -9,6 +9,7 @@ use Models\SalesType;
 use Models\Transaction;
 use Models\ItemVariant;
 use Models\Checkout;
+use Models\PortalVisitor;
 
 class PublicController {
 
@@ -299,6 +300,22 @@ class PublicController {
 		}
 		$msg = "Sync Transaction on ".date("l, Y-m-d H:i:s")."\nSince: ".((!empty($body['since'])) ? $body['since'] : '')."\nFrom: ".((!empty($body['until'])) ? $body['until'] : '')."\nResult => New: ".(isset($payload['total']['new']) ? $payload['total']['new'] : 0)." | Update: ".(isset($payload['total']['update']) ? $payload['total']['update'] : 0)."\n===================================================================";
 		slackWebhook($msg);
+		return throwJSON($response, $payload);
+	}
+
+	public function PortalVisitor($request, $response, $args) {
+		$body = $request->getParsedBody();
+		$payload = [];
+		
+		$data = array(
+			"source" => $body['source'],
+			"destination" => $body['destination']
+		);
+		$newPortalVisitor = PortalVisitor::createPortalVisitor($data);
+		$payload['success'] = true;
+		$payload['message'] = "Success create portal visitor.";
+		$msg = "Somebody visited at ".$data['destination'];
+		// slackWebhook($msg);
 		return throwJSON($response, $payload);
 	}
 
