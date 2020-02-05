@@ -68,7 +68,7 @@ class PublicController {
 				$payload['update'][] = $data;
 			}
 		}
-		slackWebhook("Sync Outlets on ".date('l, Y-m-d H:i:s')."\n===================================================================");
+		slackWebhook("Sync Outlets on ".date('l, Y-m-d H:i:s')."\n");
 		return throwJSON($response, $payload);
 	}
 
@@ -98,7 +98,7 @@ class PublicController {
 				}
 			}
 		}
-		slackWebhook("Sync Categories on ".date('l, Y-m-d H:i:s')."\n===================================================================");
+		slackWebhook("Sync Categories on ".date('l, Y-m-d H:i:s')."\n");
 		return throwJSON($response, $payload);
 	}
 
@@ -128,7 +128,7 @@ class PublicController {
 				}
 			}
 		}
-		slackWebhook("Sync Sales Type on ".date('l, Y-m-d H:i:s')."\n===================================================================");
+		slackWebhook("Sync Sales Type on ".date('l, Y-m-d H:i:s')."\n");
 		return throwJSON($response, $payload);
 	}
 
@@ -185,7 +185,7 @@ class PublicController {
 				}
 			}
 		}
-		slackWebhook("Sync Items on ".date('l, Y-m-d H:i:s')."\n===================================================================");
+		slackWebhook("Sync Items on ".date('l, Y-m-d H:i:s')."\n");
 		return throwJSON($response, $payload);
 	}
 
@@ -195,6 +195,7 @@ class PublicController {
 
 		$moka = new Moka;
 		$payload = [];
+		$filteredItems = [];
 		foreach ($filteredOutlets as $outlet) {
 			$moka_transactions = $moka->GetLatestTransactionsByOutletID($outlet->moka_outlet_id, $body);
 			foreach ($moka_transactions as $transaction) {
@@ -291,6 +292,12 @@ class PublicController {
 					} else {
 						$updatedCheckout = Checkout::updateCheckout($filter, $data);
 					}
+
+					// filter item name here
+					$explodeName = explode(" + ", $checkout['item_variant_name']);
+					foreach ($explodeName as $name) {
+						$filteredItems[$name] = (isset($filteredItems[$name]) ? $filteredItems[$name] : 0) + 1;
+					}
 				}
 
 				// end of checkouts
@@ -299,7 +306,11 @@ class PublicController {
 			$payload['total']['new'] = isset($payload['total']['new']) ? $payload['total']['new'] : 0 + isset($payload[$outlet->moka_outlet_id]['new']) ? count($payload[$outlet->moka_outlet_id]['new']) : 0;
 			$payload['total']['update'] = isset($payload['total']['update']) ? $payload['total']['update'] : 0 + isset($payload[$outlet->moka_outlet_id]['update']) ? count($payload[$outlet->moka_outlet_id]['update']) : 0;
 		}
-		$msg = "Sync Transaction on ".date("l, Y-m-d H:i:s")."\nSince: ".((!empty($body['since'])) ? $body['since'] : '')."\nFrom: ".((!empty($body['until'])) ? $body['until'] : '')."\nResult => New: ".(isset($payload['total']['new']) ? $payload['total']['new'] : 0)." | Update: ".(isset($payload['total']['update']) ? $payload['total']['update'] : 0)."\n===================================================================";
+
+		$msg = "Sync Transaction on ".date("l, Y-m-d H:i:s")."\nSince: ".((!empty($body['since'])) ? $body['since'] : '')."\nFrom: ".((!empty($body['until'])) ? $body['until'] : '')."\nResult => New: ".(isset($payload['total']['new']) ? $payload['total']['new'] : 0)." | Update: ".(isset($payload['total']['update']) ? $payload['total']['update'] : 0)."\n";
+		foreach ($filteredItems as $key => $value) {
+			$msg .= "\n".$key." : ".$value;
+		}
 		slackWebhook($msg);
 		return throwJSON($response, $payload);
 	}
