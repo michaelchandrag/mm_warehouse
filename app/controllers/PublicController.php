@@ -296,7 +296,7 @@ class PublicController {
 					// filter item name here
 					$explodeName = explode(" + ", $checkout['item_variant_name']);
 					foreach ($explodeName as $name) {
-						$filteredItems[$name] = (isset($filteredItems[$name]) ? $filteredItems[$name] : 0) + 1;
+						$filteredItems[$name] = (isset($filteredItems[$name]) ? $filteredItems[$name] : 0) + $checkout['quantity'];
 					}
 				}
 
