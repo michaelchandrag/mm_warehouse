@@ -79,4 +79,11 @@ function TZtoDT($tz) {
 	return $date->format('Y-m-d H:i:s');
 }
 
+function isEmpty($variable) {
+	if (isset($variable) && !empty($variable)) {
+		return false;
+	}
+	return true;
+}
+
 ?>

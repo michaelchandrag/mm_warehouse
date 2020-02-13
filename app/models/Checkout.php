@@ -31,4 +31,28 @@ class Checkout extends Model {
         }
         return $query->update($data);
     }
+
+    public function getItemBySalesCategory($filter) {
+        $query = DB::table('checkout as c');
+        $query->leftJoin('transaction as t', 't.moka_transaction_id','=','c.moka_transaction_id');
+        $query->leftJoin('sales_type as st','st.moka_sales_type_id','=','c.moka_sales_type_id');
+        $query->leftJoin('marimakan_sales_category as msc','msc.id','=','st.marimakan_sales_category_id');
+
+        if (isset($filter['msc.id']) && !empty($filter['msc.id'])) {
+            $query->where('msc.id','=',$filter['msc.id']);
+        }
+        if (isset($filter['since']) && !empty($filter['since'])) {
+            $query->where('t.moka_created_at','>=',$filter['since']);
+        }
+        if (isset($filter['until']) && !empty($filter['until'])) {
+            $query->where('t.moka_created_at','<=',$filter['until']);
+        }
+
+        $query->select(
+            DB::raw('c.moka_item_variant_name'),
+            DB::raw('sum(c.moka_quantity) as total')
+        );
+        $query->groupBy('c.moka_item_variant_id');
+        return $query->get();
+    }
 }

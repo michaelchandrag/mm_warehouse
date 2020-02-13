@@ -10,6 +10,7 @@ use Models\Transaction;
 use Models\ItemVariant;
 use Models\Checkout;
 use Models\PortalVisitor;
+use Models\MarimakanSalesCategory;
 
 class PublicController {
 
@@ -296,7 +297,7 @@ class PublicController {
 					// filter item name here
 					$explodeName = explode(" + ", $checkout['item_variant_name']);
 					foreach ($explodeName as $name) {
-						$filteredItems[$name.'['.$checkout['sales_type_name'].']'] = (isset($filteredItems[$name.'['.$checkout['sales_type_name'].']']) ? $filteredItems[$name.'['.$checkout['sales_type_name'].']'] : 0) + $checkout['quantity'];
+						$filteredItems[$name] = (isset($filteredItems[$name]) ? $filteredItems[$name] : 0) + $checkout['quantity'];
 					}
 				}
 
@@ -328,6 +329,28 @@ class PublicController {
 		$payload['message'] = "Success create portal visitor.";
 		$msg = "Somebody visited at ".$data['destination'];
 		// slackWebhook($msg);
+		return throwJSON($response, $payload);
+	}
+
+	public function ReportItemBySalesCategory($request, $response, $args) {
+		$body = $request->getParsedBody();
+		$categories = MarimakanSalesCategory::findMarimakanSalesCategory();
+		$payload = [];
+		foreach ($categories as $category) {
+			$filter = [];
+			foreach ($body as $key => $value) {
+				$filter[$key] = $value;
+			};
+			$filter['msc.id'] = $category->id;
+			$objCheckout = Checkout::getItemBySalesCategory($filter);
+			$category->checkout = $objCheckout;
+			$payload[] = $category;
+			$msg = $category->name."\n";
+			foreach ($objCheckout as $checkout) {
+				$msg .= $checkout->moka_item_variant_name.': '.$checkout->total."\n";
+			}
+			slackWebhook($msg);
+		}
 		return throwJSON($response, $payload);
 	}
 

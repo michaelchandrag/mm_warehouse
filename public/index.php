@@ -44,6 +44,7 @@ $app->add(function ($request, $handler) {
 
 $app->get('/', 'PublicController:Hello');
 $app->get('/outlets', 'PublicController:SearchOutlets');
+$app->get('/items_per_sales_category', 'PublicController:ReportItemBySalesCategory');
 $app->get('/moka/businesses', 'PublicController:GetMokaBusinessProfile');
 $app->get('/moka/outlets', 'PublicController:SearchMokaOutlets');
 
