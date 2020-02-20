@@ -232,7 +232,8 @@ class PublicController {
 					"moka_guid" => $transaction['guid'],
 					"moka_customer_name" => $transaction['customer_name'],
 					"moka_customer_phone" => $transaction['customer_phone'],
-					"moka_customer_email" => $transaction['customer_email']
+					"moka_customer_email" => $transaction['customer_email'],
+					"is_refund" => ((isset($transaction['payment_refunds']) && !empty($transaction['payment_refunds'])) ? 1 : 0 )
 				);
 
 				$existsTransactions = Transaction::findTransactions($filter);
@@ -352,6 +353,11 @@ class PublicController {
 			slackWebhook($msg);
 		}
 		return throwJSON($response, $payload);
+	}
+
+	public function ShowCharts($request, $response, $args) {
+		$args['asu'] = "asu";
+		return throwHTML($response, "charts.php", $args);
 	}
 
 }

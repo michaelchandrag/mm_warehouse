@@ -13,6 +13,7 @@ return array(
     'Symfony\\Contracts\\Translation\\' => array($vendorDir . '/symfony/translation-contracts'),
     'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
     'SuperClosure\\' => array($vendorDir . '/jeremeamia/superclosure/src'),
+    'Slim\\Views\\' => array($vendorDir . '/slim/php-view/src'),
     'Slim\\Psr7\\' => array($vendorDir . '/slim/psr7/src'),
     'Slim\\' => array($vendorDir . '/slim/slim/Slim'),
     'Selective\\BasePath\\' => array($vendorDir . '/selective/basepath/src'),

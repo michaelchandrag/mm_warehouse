@@ -1,6 +1,7 @@
 <?php
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use Slim\Views\PhpRenderer;
 
 function curlPOST($url, $headers=array(), $body) {
 	$ch = curl_init($url);
@@ -54,6 +55,11 @@ function throwJSON($response, $data) {
 	return $response
 			->withHeader('Content-Type', 'application/json')
 			->withStatus(200);
+}
+
+function throwHTML($response, $filename, $args = array()) {
+	$renderer = new PhpRenderer('./../public/views/');
+	return $renderer->render($response, $filename, $args);
 }
 
 function slackWebhook($message) {
