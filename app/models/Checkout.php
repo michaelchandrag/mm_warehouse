@@ -48,6 +48,9 @@ class Checkout extends Model {
             $query->where('t.moka_created_at','<=',$filter['until']);
         }
 
+        if (isset($filter['t.is_refund'])) {
+            $query->where('t.is_refund','=',$filter['t.is_refund']);
+        }
         $query->select(
             DB::raw('c.moka_item_variant_name'),
             DB::raw('sum(c.moka_quantity) as total')

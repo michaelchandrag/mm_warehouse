@@ -343,6 +343,7 @@ class PublicController {
 				$filter[$key] = $value;
 			};
 			$filter['msc.id'] = $category->id;
+			$filter['t.is_refund'] = 0;
 			$objCheckout = Checkout::getItemBySalesCategory($filter);
 			$category->checkout = $objCheckout;
 			$payload[] = $category;
